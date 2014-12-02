@@ -114,7 +114,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 		if (!iface.isInterface())
 			iface = interfaceMap.get(iface);
 
-		checkState(iface == null, "Non-mappable type found");
+		checkState(iface != null, "Non-mappable type found");
 		return gson.getDelegateAdapter(this, TypeToken.get(iface));
 	}
 }
