@@ -15,12 +15,16 @@
  */
 package com.dampcake.gson.immutable;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -38,6 +42,15 @@ import com.google.gson.reflect.TypeToken;
  */
 public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 
+	private static final Map<Class, Class> interfaceMap = ImmutableMap.<Class, Class>builder()
+			.put(ImmutableCollection.class, Collection.class)
+			.put(ImmutableList.class, List.class)
+			.put(ImmutableSet.class, Set.class)
+			.put(ImmutableSortedSet.class, SortedSet.class)
+			.put(ImmutableMap.class, Map.class)
+			.put(ImmutableSortedMap.class, SortedMap.class)
+			.build();
+	
 	private final Map<Class, Class<? extends TypeAdapter>> adapters;
 
 	private ImmutableAdapterFactory(Map<Class, Class<? extends TypeAdapter>> adapters) {
@@ -52,6 +65,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 	 */
 	public static TypeAdapterFactory forGuava() {
 		return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
+				.put(ImmutableCollection.class, ImmutableCollectionAdapter.class)
 				.put(ImmutableList.class, ImmutableListAdapter.class)
 				.put(ImmutableSet.class, ImmutableSetAdapter.class)
 				.put(ImmutableSortedSet.class, ImmutableSortedSetAdapter.class)
@@ -68,6 +82,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 	 */
 	public static TypeAdapterFactory forInterfaces() {
 		return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
+				.put(Collection.class, ImmutableCollectionAdapter.class)
 				.put(List.class, ImmutableListAdapter.class)
 				.put(Set.class, ImmutableSetAdapter.class)
 				.put(SortedSet.class, ImmutableSortedSetAdapter.class)
@@ -97,8 +112,9 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 		Class<?> iface = type.getRawType();
 		
 		if (!iface.isInterface())
-			iface = type.getRawType().getInterfaces()[0];
+			iface = interfaceMap.get(iface);
 
+		checkState(iface == null, "Non-mappable type found");
 		return gson.getDelegateAdapter(this, TypeToken.get(iface));
 	}
 }

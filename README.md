@@ -23,6 +23,7 @@ final Gson gson = new GsonBuilder().registerTypeAdapterFactory(ImmutableAdapterF
 
 Supported Types
 ============
+* ImmutableCollection (Collection)
 * ImmutableList (List)
 * ImmutableSet (Set)
 * ImmutableSortedSet (SortedSet)

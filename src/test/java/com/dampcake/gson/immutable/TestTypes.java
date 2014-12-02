@@ -1,10 +1,12 @@
 package com.dampcake.gson.immutable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -13,6 +15,9 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.gson.reflect.TypeToken;
 
 public final class TestTypes {
+	
+	public static final TypeToken<ImmutableCollection<String>> I_COLLECTION_TYPE = new TypeToken<ImmutableCollection<String>>(){};
+	public static final TypeToken<Collection<String>> COLLECTION_TYPE = new TypeToken<Collection<String>>(){};
 	
 	public static final TypeToken<ImmutableList<String>> I_LIST_TYPE = new TypeToken<ImmutableList<String>>(){};
 	public static final TypeToken<List<String>> LIST_TYPE = new TypeToken<List<String>>(){};
