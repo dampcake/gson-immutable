@@ -18,7 +18,7 @@ final Gson gson = new GsonBuilder().registerTypeAdapterFactory(ImmutableAdapterF
 Register Java interfaces:
 
 ```java
-final Gson gson = new GsonBuilder().registerTypeAdapterFactory(ImmutableAdapterFactory.forInterfaces()).create();
+final Gson gson = new GsonBuilder().registerTypeAdapterFactory(ImmutableAdapterFactory.forJava()).create();
 ```
 
 Supported Types

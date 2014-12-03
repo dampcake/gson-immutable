@@ -80,7 +80,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 	 * 
 	 * @return the created {@link TypeAdapterFactory}.
 	 */
-	public static TypeAdapterFactory forInterfaces() {
+	public static TypeAdapterFactory forJava() {
 		return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
 				.put(Collection.class, ImmutableCollectionAdapter.class)
 				.put(List.class, ImmutableListAdapter.class)

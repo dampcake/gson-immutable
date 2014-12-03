@@ -7,6 +7,6 @@ public abstract class BaseTest {
 
 	protected Gson gson = new GsonBuilder()
 			.registerTypeAdapterFactory(ImmutableAdapterFactory.forGuava())
-			.registerTypeAdapterFactory(ImmutableAdapterFactory.forInterfaces())
+			.registerTypeAdapterFactory(ImmutableAdapterFactory.forJava())
 			.create();
 }
