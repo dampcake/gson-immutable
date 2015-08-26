@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 public abstract class BaseTest {
 
-	protected Gson gson = new GsonBuilder()
+	protected final Gson gson = new GsonBuilder()
 			.registerTypeAdapterFactory(ImmutableAdapterFactory.forGuava())
 			.registerTypeAdapterFactory(ImmutableAdapterFactory.forJava())
 			.create();

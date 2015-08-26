@@ -26,7 +26,7 @@ import com.google.gson.stream.JsonWriter;
  * 
  * @author Adam Peck
  */
-public abstract class DelegateAdapter<T> extends TypeAdapter<T> {
+abstract class DelegateAdapter<T> extends TypeAdapter<T> {
 
 	private final TypeAdapter<T> delegate;
 
