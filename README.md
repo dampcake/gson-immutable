@@ -8,7 +8,7 @@ Gson TypeAdapters for Guava Immutable Objects.
 
 Requires JDK 1.6 or higher (Guava)
 
-[Javadoc](http://dampcake.github.io/bencode/)
+[Javadoc](http://dampcake.github.io/gson-immutable/)
 
 Examples
 =======
