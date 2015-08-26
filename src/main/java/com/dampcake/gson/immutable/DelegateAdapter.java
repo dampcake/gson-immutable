@@ -15,56 +15,56 @@
  */
 package com.dampcake.gson.immutable;
 
-import java.io.IOException;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 /**
  * A {@link TypeAdapter} that transforms the object returned by a delegate {@link TypeAdapter}.
- * 
+ *
  * @author Adam Peck
  */
 abstract class DelegateAdapter<T> extends TypeAdapter<T> {
 
-	private final TypeAdapter<T> delegate;
+    private final TypeAdapter<T> delegate;
 
-	/**
-	 * Create and set the delegate {@link TypeAdapter} to be used.
-	 * 
-	 * @param delegate the delegate {@link TypeAdapter}.
-	 */
-	public DelegateAdapter(TypeAdapter<T> delegate) {
-		this.delegate = delegate;
-	}
+    /**
+     * Create and set the delegate {@link TypeAdapter} to be used.
+     *
+     * @param delegate the delegate {@link TypeAdapter}.
+     */
+    public DelegateAdapter(TypeAdapter<T> delegate) {
+        this.delegate = delegate;
+    }
 
-	/**
-	 * @see TypeAdapter#write(JsonWriter, Object)
-	 */
-	@Override
-	public void write(JsonWriter writer, T t) throws IOException {
-		delegate.write(writer, t);
-	}
+    /**
+     * @see TypeAdapter#write(JsonWriter, Object)
+     */
+    @Override
+    public void write(JsonWriter writer, T t) throws IOException {
+        delegate.write(writer, t);
+    }
 
-	/**
-	 * @see TypeAdapter#read(JsonReader)
-	 */
-	@Override
-	public T read(JsonReader reader) throws IOException {
-		T t = delegate.read(reader);
-		
-		if (t == null)
-			return null;
-		
-		return transform(t);
-	}
+    /**
+     * @see TypeAdapter#read(JsonReader)
+     */
+    @Override
+    public T read(JsonReader reader) throws IOException {
+        T t = delegate.read(reader);
 
-	/**
-	 * Override to transform default Gson de-serialized object.
-	 * 
-	 * @param t the converted Java object.
-	 * @return the transformed Java object.
-	 */
-	protected abstract T transform(T t);
+        if (t == null)
+            return null;
+
+        return transform(t);
+    }
+
+    /**
+     * Override to transform default Gson de-serialized object.
+     *
+     * @param t the converted Java object.
+     * @return the transformed Java object.
+     */
+    protected abstract T transform(T t);
 }

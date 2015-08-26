@@ -15,15 +15,6 @@
  */
 package com.dampcake.gson.immutable;
 
-import static com.google.common.base.Preconditions.checkState;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -35,86 +26,95 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * {@link TypeAdapterFactory} for de-serializing Gson Immutable types.
- * 
+ *
  * @author Adam Peck
  */
 public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 
-	private static final Map<Class, Class> interfaceMap = ImmutableMap.<Class, Class>builder()
-			.put(ImmutableCollection.class, Collection.class)
-			.put(ImmutableList.class, List.class)
-			.put(ImmutableSet.class, Set.class)
-			.put(ImmutableSortedSet.class, SortedSet.class)
-			.put(ImmutableMap.class, Map.class)
-			.put(ImmutableSortedMap.class, SortedMap.class)
-			.build();
-	
-	private final Map<Class, Class<? extends TypeAdapter>> adapters;
+    private static final Map<Class, Class> interfaceMap = ImmutableMap.<Class, Class>builder()
+            .put(ImmutableCollection.class, Collection.class)
+            .put(ImmutableList.class, List.class)
+            .put(ImmutableSet.class, Set.class)
+            .put(ImmutableSortedSet.class, SortedSet.class)
+            .put(ImmutableMap.class, Map.class)
+            .put(ImmutableSortedMap.class, SortedMap.class)
+            .build();
 
-	private ImmutableAdapterFactory(Map<Class, Class<? extends TypeAdapter>> adapters) {
-		this.adapters = adapters;
-	}
+    private final Map<Class, Class<? extends TypeAdapter>> adapters;
 
-	/**
-	 * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
-	 * by their interfaces.
-	 * 
-	 * @return the created {@link TypeAdapterFactory}.
-	 */
-	public static TypeAdapterFactory forGuava() {
-		return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
-				.put(ImmutableCollection.class, ImmutableCollectionAdapter.class)
-				.put(ImmutableList.class, ImmutableListAdapter.class)
-				.put(ImmutableSet.class, ImmutableSetAdapter.class)
-				.put(ImmutableSortedSet.class, ImmutableSortedSetAdapter.class)
-				.put(ImmutableMap.class, ImmutableMapAdapter.class)
-				.put(ImmutableSortedMap.class, ImmutableSortedMapAdapter.class)
-				.build());
-	}
-	
-	/**
-	 * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
-	 * by Java interfaces.
-	 * 
-	 * @return the created {@link TypeAdapterFactory}.
-	 */
-	public static TypeAdapterFactory forJava() {
-		return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
-				.put(Collection.class, ImmutableCollectionAdapter.class)
-				.put(List.class, ImmutableListAdapter.class)
-				.put(Set.class, ImmutableSetAdapter.class)
-				.put(SortedSet.class, ImmutableSortedSetAdapter.class)
-				.put(Map.class, ImmutableMapAdapter.class)
-				.put(SortedMap.class, ImmutableSortedMapAdapter.class)
-				.build());
-	}
+    private ImmutableAdapterFactory(Map<Class, Class<? extends TypeAdapter>> adapters) {
+        this.adapters = adapters;
+    }
 
-	/**
-	 * @see TypeAdapterFactory#create(Gson, TypeToken) 
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-		if (adapters.containsKey(type.getRawType())) {
-			TypeAdapter delegate = getDelegate(gson, type);
-			try {
-				return adapters.get(type.getRawType()).getConstructor(TypeAdapter.class).newInstance(delegate);
-			} catch (Exception e) {
-				return null;
-			}
-		}
-		return null;
-	}
+    /**
+     * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
+     * by their interfaces.
+     *
+     * @return the created {@link TypeAdapterFactory}.
+     */
+    public static TypeAdapterFactory forGuava() {
+        return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
+                .put(ImmutableCollection.class, ImmutableCollectionAdapter.class)
+                .put(ImmutableList.class, ImmutableListAdapter.class)
+                .put(ImmutableSet.class, ImmutableSetAdapter.class)
+                .put(ImmutableSortedSet.class, ImmutableSortedSetAdapter.class)
+                .put(ImmutableMap.class, ImmutableMapAdapter.class)
+                .put(ImmutableSortedMap.class, ImmutableSortedMapAdapter.class)
+                .build());
+    }
 
-	private <T> TypeAdapter getDelegate(Gson gson, TypeToken<T> type) {
-		Class<?> iface = type.getRawType();
-		
-		if (!iface.isInterface())
-			iface = interfaceMap.get(iface);
+    /**
+     * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
+     * by Java interfaces.
+     *
+     * @return the created {@link TypeAdapterFactory}.
+     */
+    public static TypeAdapterFactory forJava() {
+        return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
+                .put(Collection.class, ImmutableCollectionAdapter.class)
+                .put(List.class, ImmutableListAdapter.class)
+                .put(Set.class, ImmutableSetAdapter.class)
+                .put(SortedSet.class, ImmutableSortedSetAdapter.class)
+                .put(Map.class, ImmutableMapAdapter.class)
+                .put(SortedMap.class, ImmutableSortedMapAdapter.class)
+                .build());
+    }
 
-		checkState(iface != null, "Non-mappable type found");
-		return gson.getDelegateAdapter(this, TypeToken.get(iface));
-	}
+    /**
+     * @see TypeAdapterFactory#create(Gson, TypeToken)
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        if (adapters.containsKey(type.getRawType())) {
+            TypeAdapter delegate = getDelegate(gson, type);
+            try {
+                return adapters.get(type.getRawType()).getConstructor(TypeAdapter.class).newInstance(delegate);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private <T> TypeAdapter getDelegate(Gson gson, TypeToken<T> type) {
+        Class<?> iface = type.getRawType();
+
+        if (!iface.isInterface())
+            iface = interfaceMap.get(iface);
+
+        checkState(iface != null, "Non-mappable type found");
+        return gson.getDelegateAdapter(this, TypeToken.get(iface));
+    }
 }

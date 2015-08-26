@@ -15,30 +15,30 @@
  */
 package com.dampcake.gson.immutable;
 
-import java.util.SortedMap;
-
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.gson.TypeAdapter;
 
+import java.util.SortedMap;
+
 /**
  * Type adapter responsible for {@link ImmutableSortedMap}.
- * 
+ *
  * @author Adam Peck
  */
 public class ImmutableSortedMapAdapter extends DelegateAdapter<SortedMap<?, ?>> {
-	
-	/**
-	 * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
-	 */
-	public ImmutableSortedMapAdapter(TypeAdapter<SortedMap<?, ?>> delegate) {
-		super(delegate);
-	}
-	
-	/**
-	 * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
-	 */
-	@Override
-	protected SortedMap<?, ?> transform(SortedMap<?, ?> map) {
-		return ImmutableSortedMap.copyOf(map);
-	}
+
+    /**
+     * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
+     */
+    public ImmutableSortedMapAdapter(TypeAdapter<SortedMap<?, ?>> delegate) {
+        super(delegate);
+    }
+
+    /**
+     * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
+     */
+    @Override
+    protected SortedMap<?, ?> transform(SortedMap<?, ?> map) {
+        return ImmutableSortedMap.copyOf(map);
+    }
 }
