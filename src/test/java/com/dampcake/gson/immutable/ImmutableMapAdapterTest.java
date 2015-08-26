@@ -13,25 +13,31 @@ import static org.junit.Assert.assertNotSame;
 
 public class ImmutableMapAdapterTest extends BaseTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = NullPointerException.class)
+    public void testConstructorNull() {
+        new ImmutableMapAdapter(null);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testGuava() {
-        String json = gson.toJson(MAP_VALUES);
-        ImmutableMap<String, String> map = gson.fromJson(json, I_MAP_TYPE.getType());
+        ImmutableMap<String, String> map = gson.fromJson(gson.toJson(MAP_VALUES), I_MAP_TYPE.getType());
 
         assertEquals(MAP_VALUES, map);
         assertNotSame(MAP_VALUES, map);
 
+        exception.expect(UnsupportedOperationException.class);
         map.put("test", "test");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInterface() {
-        String json = gson.toJson(MAP_VALUES);
-        Map<String, String> map = gson.fromJson(json, MAP_TYPE.getType());
+        Map<String, String> map = gson.fromJson(gson.toJson(MAP_VALUES), MAP_TYPE.getType());
 
         assertEquals(MAP_VALUES, map);
         assertNotSame(MAP_VALUES, map);
 
+        exception.expect(UnsupportedOperationException.class);
         map.put("test", "test");
     }
 }

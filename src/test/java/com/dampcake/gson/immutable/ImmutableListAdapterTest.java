@@ -13,25 +13,31 @@ import static org.junit.Assert.assertNotSame;
 
 public class ImmutableListAdapterTest extends BaseTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = NullPointerException.class)
+    public void testConstructorNull() {
+        new ImmutableListAdapter(null);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testGuava() {
-        String json = gson.toJson(LIST_VALUES);
-        ImmutableList<String> list = gson.fromJson(json, I_LIST_TYPE.getType());
+        ImmutableList<String> list = gson.fromJson(gson.toJson(LIST_VALUES), I_LIST_TYPE.getType());
 
         assertEquals(LIST_VALUES, list);
         assertNotSame(LIST_VALUES, list);
 
+        exception.expect(UnsupportedOperationException.class);
         list.add("test");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInterface() {
-        String json = gson.toJson(LIST_VALUES);
-        List<String> list = gson.fromJson(json, LIST_TYPE.getType());
+        List<String> list = gson.fromJson(gson.toJson(LIST_VALUES), LIST_TYPE.getType());
 
         assertEquals(LIST_VALUES, list);
         assertNotSame(LIST_VALUES, list);
 
+        exception.expect(UnsupportedOperationException.class);
         list.add("test");
     }
 }

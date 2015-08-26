@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -28,7 +29,7 @@ public final class TestTypes {
 
     public static final TypeToken<ImmutableMap<String, String>> I_MAP_TYPE = new TypeToken<ImmutableMap<String, String>>() {
     };
-    public static final TypeToken<ImmutableMap<String, String>> MAP_TYPE = new TypeToken<ImmutableMap<String, String>>() {
+    public static final TypeToken<Map<String, String>> MAP_TYPE = new TypeToken<Map<String, String>>() {
     };
 
     public static final TypeToken<ImmutableSet<String>> I_SET_TYPE = new TypeToken<ImmutableSet<String>>() {

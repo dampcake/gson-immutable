@@ -2,6 +2,8 @@ package com.dampcake.gson.immutable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 public abstract class BaseTest {
 
@@ -9,4 +11,7 @@ public abstract class BaseTest {
             .registerTypeAdapterFactory(ImmutableAdapterFactory.forGuava())
             .registerTypeAdapterFactory(ImmutableAdapterFactory.forJava())
             .create();
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 }

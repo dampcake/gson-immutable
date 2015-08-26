@@ -59,7 +59,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 
     /**
      * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
-     * by their interfaces.
+     * by Guava interfaces.
      *
      * @return the created {@link TypeAdapterFactory}.
      */
@@ -92,7 +92,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
     }
 
     /**
-     * @see TypeAdapterFactory#create(Gson, TypeToken)
+     * {@inheritDoc}
      */
     @Override
     @SuppressWarnings("unchecked")

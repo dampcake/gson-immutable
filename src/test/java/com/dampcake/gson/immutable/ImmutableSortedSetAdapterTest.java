@@ -14,7 +14,13 @@ import static org.junit.Assert.assertThat;
 
 public class ImmutableSortedSetAdapterTest extends BaseTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = NullPointerException.class)
+    public void testConstructorNull() {
+        new ImmutableSortedSetAdapter(null);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testGuava() {
         String json = gson.toJson(LIST_VALUES);
         ImmutableSortedSet<String> set = gson.fromJson(json, I_SSET_TYPE.getType());
@@ -22,10 +28,11 @@ public class ImmutableSortedSetAdapterTest extends BaseTest {
         assertThat(set, hasItems(LIST_VALUES.toArray(new String[3])));
         assertNotSame(LIST_VALUES, set);
 
+        exception.expect(UnsupportedOperationException.class);
         set.add("test");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInterface() {
         String json = gson.toJson(LIST_VALUES);
         SortedSet<String> set = gson.fromJson(json, SSET_TYPE.getType());
@@ -33,6 +40,7 @@ public class ImmutableSortedSetAdapterTest extends BaseTest {
         assertThat(set, hasItems(LIST_VALUES.toArray(new String[3])));
         assertNotSame(LIST_VALUES, set);
 
+        exception.expect(UnsupportedOperationException.class);
         set.add("test");
     }
 }

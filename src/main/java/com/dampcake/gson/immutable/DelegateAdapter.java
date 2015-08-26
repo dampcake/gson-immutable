@@ -15,6 +15,7 @@
  */
 package com.dampcake.gson.immutable;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -26,21 +27,24 @@ import java.io.IOException;
  *
  * @author Adam Peck
  */
-abstract class DelegateAdapter<T> extends TypeAdapter<T> {
+public abstract class DelegateAdapter<T> extends TypeAdapter<T> {
 
     private final TypeAdapter<T> delegate;
 
     /**
      * Create and set the delegate {@link TypeAdapter} to be used.
      *
-     * @param delegate the delegate {@link TypeAdapter}.
+     * @param delegate the delegate {@link TypeAdapter}
+     * @throws NullPointerException if the delegate {@link TypeAdapter} is null
      */
     public DelegateAdapter(TypeAdapter<T> delegate) {
+        Preconditions.checkNotNull(delegate, "delegate cannot be null");
+
         this.delegate = delegate;
     }
 
     /**
-     * @see TypeAdapter#write(JsonWriter, Object)
+     * {@inheritDoc}
      */
     @Override
     public void write(JsonWriter writer, T t) throws IOException {
@@ -48,7 +52,7 @@ abstract class DelegateAdapter<T> extends TypeAdapter<T> {
     }
 
     /**
-     * @see TypeAdapter#read(JsonReader)
+     * {@inheritDoc}
      */
     @Override
     public T read(JsonReader reader) throws IOException {

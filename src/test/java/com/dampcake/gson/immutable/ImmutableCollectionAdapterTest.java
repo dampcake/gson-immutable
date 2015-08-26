@@ -13,25 +13,31 @@ import static org.junit.Assert.assertNotSame;
 
 public class ImmutableCollectionAdapterTest extends BaseTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = NullPointerException.class)
+    public void testConstructorNull() {
+        new ImmutableCollectionAdapter(null);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testGuava() {
-        String json = gson.toJson(LIST_VALUES);
-        ImmutableCollection<String> collection = gson.fromJson(json, I_COLLECTION_TYPE.getType());
+        ImmutableCollection<String> collection = gson.fromJson(gson.toJson(LIST_VALUES), I_COLLECTION_TYPE.getType());
 
         assertEquals(LIST_VALUES, collection);
         assertNotSame(LIST_VALUES, collection);
 
+        exception.expect(UnsupportedOperationException.class);
         collection.add("test");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInterface() {
-        String json = gson.toJson(LIST_VALUES);
-        Collection<String> collection = gson.fromJson(json, COLLECTION_TYPE.getType());
+        Collection<String> collection = gson.fromJson(gson.toJson(LIST_VALUES), COLLECTION_TYPE.getType());
 
         assertEquals(LIST_VALUES, collection);
         assertNotSame(LIST_VALUES, collection);
 
+        exception.expect(UnsupportedOperationException.class);
         collection.add("test");
     }
 }

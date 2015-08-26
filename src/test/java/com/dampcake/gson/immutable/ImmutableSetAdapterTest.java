@@ -14,25 +14,31 @@ import static org.junit.Assert.assertThat;
 
 public class ImmutableSetAdapterTest extends BaseTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = NullPointerException.class)
+    public void testConstructorNull() {
+        new ImmutableSetAdapter(null);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testGuava() {
-        String json = gson.toJson(LIST_VALUES);
-        ImmutableSet<String> set = gson.fromJson(json, I_SET_TYPE.getType());
+        ImmutableSet<String> set = gson.fromJson(gson.toJson(LIST_VALUES), I_SET_TYPE.getType());
 
         assertThat(set, hasItems(LIST_VALUES.toArray(new String[3])));
         assertNotSame(LIST_VALUES, set);
 
+        exception.expect(UnsupportedOperationException.class);
         set.add("test");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInterface() {
-        String json = gson.toJson(LIST_VALUES);
-        Set<String> set = gson.fromJson(json, SET_TYPE.getType());
+        Set<String> set = gson.fromJson(gson.toJson(LIST_VALUES), SET_TYPE.getType());
 
         assertThat(set, hasItems(LIST_VALUES.toArray(new String[3])));
         assertNotSame(LIST_VALUES, set);
 
+        exception.expect(UnsupportedOperationException.class);
         set.add("test");
     }
 }
