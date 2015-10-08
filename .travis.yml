@@ -1,11 +1,11 @@
 language: java
 sudo: false
 
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk7
-  - openjdk6
+env:
+  global:
+    - SONATYPE_USERNAME=dampcake
+    secure: LwGIZHEum/jNYeHakGXfKJcrx8PdKSuVYi/UheFUCzvvr9swIV6aLR8VDRKomVhyvVEgyvkCUeZ60cPjRAeXEDT8LfQeYVnRpmSIFlEsEsOy9VTfdWZ4LsOeOCcSxP40JmM2CxklkGjuLvU561iOeY8fkY8VgHe9KEKmBt6S2Cc=
 
 after_success:
   - mvn clean test cobertura:cobertura coveralls:report
+  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { python addserver.py; mvn clean deploy --settings ~/.m2/mySettings.xml; };"
