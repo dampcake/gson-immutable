@@ -53,7 +53,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
 
     private final Map<Class, Class<? extends TypeAdapter>> adapters;
 
-    private ImmutableAdapterFactory(Map<Class, Class<? extends TypeAdapter>> adapters) {
+    ImmutableAdapterFactory(Map<Class, Class<? extends TypeAdapter>> adapters) {
         this.adapters = adapters;
     }
 

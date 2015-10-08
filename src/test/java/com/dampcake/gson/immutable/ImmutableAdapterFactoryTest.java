@@ -1,8 +1,14 @@
 package com.dampcake.gson.immutable;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
+
+import java.util.Collection;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,6 +54,13 @@ public class ImmutableAdapterFactoryTest {
         assertNull(java.create(gson, TestTypes.I_LIST_TYPE));
     }
 
+    @Test
+    public void testNullType() {
+        TypeAdapterFactory factory = new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder().put(Collection.class, ExceptionThrowingAdapter.class).build());
+
+        assertNull(factory.create(gson, TestTypes.COLLECTION_TYPE));
+    }
+
     @Test(expected = NullPointerException.class)
     public void testForGuavaCreateNullType() {
         ImmutableAdapterFactory.forGuava().create(gson, null);
@@ -56,5 +69,26 @@ public class ImmutableAdapterFactoryTest {
     @Test(expected = NullPointerException.class)
     public void testForJavaCreateNullType() {
         ImmutableAdapterFactory.forJava().create(gson, null);
+    }
+
+    /**
+     * Throws an exception when created to test exception handling in {@link ImmutableAdapterFactory#create(Gson, TypeToken)}.
+     */
+    private static class ExceptionThrowingAdapter extends DelegateAdapter<Collection<?>> {
+        /**
+         * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
+         */
+        public ExceptionThrowingAdapter(TypeAdapter<Collection<?>> delegate) {
+            super(delegate);
+            throw new NullPointerException();
+        }
+
+        /**
+         * @see DelegateAdapter#transform(Object)
+         */
+        @Override
+        protected Collection<?> transform(Collection<?> collection) {
+            return ImmutableList.copyOf(collection);
+        }
     }
 }
