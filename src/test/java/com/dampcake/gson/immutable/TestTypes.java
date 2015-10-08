@@ -47,7 +47,6 @@ public final class TestTypes {
     public static final TypeToken<SortedSet<String>> SSET_TYPE = new TypeToken<SortedSet<String>>() {
     };
 
-
     private TestTypes() {
     }
 }
