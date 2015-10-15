@@ -4,7 +4,7 @@ sudo: false
 env:
   global:
     - SONATYPE_USERNAME=dampcake
-    secure: "LwGIZHEum/jNYeHakGXfKJcrx8PdKSuVYi/UheFUCzvvr9swIV6aLR8VDRKomVhyvVEgyvkCUeZ60cPjRAeXEDT8LfQeYVnRpmSIFlEsEsOy9VTfdWZ4LsOeOCcSxP40JmM2CxklkGjuLvU561iOeY8fkY8VgHe9KEKmBt6S2Cc="
+    - secure: "LwGIZHEum/jNYeHakGXfKJcrx8PdKSuVYi/UheFUCzvvr9swIV6aLR8VDRKomVhyvVEgyvkCUeZ60cPjRAeXEDT8LfQeYVnRpmSIFlEsEsOy9VTfdWZ4LsOeOCcSxP40JmM2CxklkGjuLvU561iOeY8fkY8VgHe9KEKmBt6S2Cc="
 
 after_success:
   - mvn clean test cobertura:cobertura coveralls:report
