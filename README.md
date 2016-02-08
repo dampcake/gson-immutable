@@ -45,9 +45,12 @@ final Gson gson = new GsonBuilder().registerTypeAdapterFactory(ImmutableAdapterF
 ```
 
 ## Supported Types
-* ImmutableCollection (Collection)
-* ImmutableList (List)
-* ImmutableSet (Set)
-* ImmutableSortedSet (SortedSet)
-* ImmutableMap (Map)
-* ImmutableSortedMap (SortedMap) 
+Interface | Immutable Version | Supported?
+--- | --- | ---
+Collection | ImmutableCollection | :heavy_check_mark:
+List | ImmutableList | :heavy_check_mark:
+Set | ImmutableSet | :heavy_check_mark:
+SortedSet | ImmutableSortedSet | :heavy_check_mark:
+NavigableSet | ImmutableSortedSet | :x:
+Map | ImmutableMap | :heavy_check_mark:
+SortedMap | ImmutableSortedMap | :heavy_check_mark:
