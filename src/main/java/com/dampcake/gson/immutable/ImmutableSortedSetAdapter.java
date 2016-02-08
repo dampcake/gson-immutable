@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Peck.
+ * Copyright 2016 Adam Peck.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,12 @@ import com.google.gson.TypeAdapter;
 
 import java.util.SortedSet;
 
-/**
- * Type adapter responsible for {@link ImmutableSortedSet}.
- *
- * @author Adam Peck
- */
-public class ImmutableSortedSetAdapter extends DelegateAdapter<SortedSet<?>> {
+class ImmutableSortedSetAdapter extends DelegateAdapter<SortedSet<?>> {
 
-    /**
-     * @see DelegateAdapter#DelegateAdapter(TypeAdapter)
-     */
     public ImmutableSortedSetAdapter(TypeAdapter<SortedSet<?>> delegate) {
         super(delegate);
     }
 
-    /**
-     * @see DelegateAdapter#transform(Object)
-     */
     @Override
     protected SortedSet<?> transform(SortedSet<?> set) {
         return ImmutableSortedSet.copyOf(set);

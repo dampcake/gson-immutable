@@ -7,10 +7,13 @@ import org.junit.rules.ExpectedException;
 
 public abstract class BaseTest {
 
-    protected final Gson gson = new GsonBuilder()
-            .registerTypeAdapterFactory(ImmutableAdapterFactory.forGuava())
-            .registerTypeAdapterFactory(ImmutableAdapterFactory.forJava())
-            .create();
+    protected final Gson gson;
+
+    public BaseTest() {
+        GsonBuilder builder = new GsonBuilder();
+        ImmutableAdapterFactory.registerOn(builder, true);
+        gson = builder.create();
+    }
 
     @Rule
     public ExpectedException exception = ExpectedException.none();

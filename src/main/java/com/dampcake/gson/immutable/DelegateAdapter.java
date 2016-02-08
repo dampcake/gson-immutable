@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Peck.
+ * Copyright 2016 Adam Peck.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,38 +22,21 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-/**
- * A {@link TypeAdapter} that transforms the object returned by a delegate {@link TypeAdapter}.
- *
- * @author Adam Peck
- */
-public abstract class DelegateAdapter<T> extends TypeAdapter<T> {
+abstract class DelegateAdapter<T> extends TypeAdapter<T> {
 
     private final TypeAdapter<T> delegate;
 
-    /**
-     * Create and set the delegate {@link TypeAdapter} to be used.
-     *
-     * @param delegate the delegate {@link TypeAdapter}
-     * @throws NullPointerException if the delegate {@link TypeAdapter} is null
-     */
     public DelegateAdapter(TypeAdapter<T> delegate) {
         Preconditions.checkNotNull(delegate, "delegate cannot be null");
 
         this.delegate = delegate;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(JsonWriter writer, T t) throws IOException {
         delegate.write(writer, t);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public T read(JsonReader reader) throws IOException {
         T t = delegate.read(reader);
@@ -64,11 +47,5 @@ public abstract class DelegateAdapter<T> extends TypeAdapter<T> {
         return transform(t);
     }
 
-    /**
-     * Override to transform default Gson de-serialized object.
-     *
-     * @param t the converted Java object.
-     * @return the transformed Java object.
-     */
     protected abstract T transform(T t);
 }

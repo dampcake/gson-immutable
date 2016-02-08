@@ -3,9 +3,11 @@ package com.dampcake.gson.immutable;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Multiset;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Collection;
@@ -48,6 +50,11 @@ public final class TestTypes {
     public static final TypeToken<SortedSet<String>> SSET_TYPE = new TypeToken<SortedSet<String>>() {
     };
     public static final TypeToken<NavigableSet<String>> NSET_TYPE = new TypeToken<NavigableSet<String>>() {
+    };
+
+    public static final TypeToken<ImmutableMultiset<String>> I_MSET_TYPE = new TypeToken<ImmutableMultiset<String>>() {
+    };
+    public static final TypeToken<Multiset<String>> MSET_TYPE = new TypeToken<Multiset<String>>() {
     };
 
     private TestTypes() {

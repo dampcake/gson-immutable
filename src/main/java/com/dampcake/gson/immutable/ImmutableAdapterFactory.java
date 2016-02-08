@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Peck.
+ * Copyright 2016 Adam Peck.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,14 @@ package com.dampcake.gson.immutable;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Multiset;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
@@ -36,6 +40,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -52,6 +57,11 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
             .put(ImmutableSortedSet.class, SortedSet.class)
             .put(ImmutableMap.class, Map.class)
             .put(ImmutableSortedMap.class, SortedMap.class)
+            .put(ImmutableMultiset.class, Multiset.class)
+            .build();
+
+    private static final Map<Class, InstanceCreator<?>> creatorMap = ImmutableMap.<Class, InstanceCreator<?>>builder()
+            .put(Multiset.class, new MultisetCreator())
             .build();
 
     private final Map<Class, Class<? extends TypeAdapter>> adapters;
@@ -66,6 +76,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
      *
      * @return the created {@link TypeAdapterFactory}.
      */
+    // TODO: private
     public static TypeAdapterFactory forGuava() {
         return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
                 .put(ImmutableCollection.class, ImmutableCollectionAdapter.class)
@@ -74,6 +85,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .put(ImmutableSortedSet.class, ImmutableSortedSetAdapter.class)
                 .put(ImmutableMap.class, ImmutableMapAdapter.class)
                 .put(ImmutableSortedMap.class, ImmutableSortedMapAdapter.class)
+                .put(ImmutableMultiset.class, ImmutableMultisetAdapter.class)
                 .build());
     }
 
@@ -83,6 +95,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
      *
      * @return the created {@link TypeAdapterFactory}.
      */
+    // TODO: private
     public static TypeAdapterFactory forJava() {
         return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
                 .put(Collection.class, ImmutableCollectionAdapter.class)
@@ -92,7 +105,24 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .put(NavigableSet.class, ImmutableSortedSetAdapter.class)
                 .put(Map.class, ImmutableMapAdapter.class)
                 .put(SortedMap.class, ImmutableSortedMapAdapter.class)
+                .put(Multiset.class, ImmutableMultisetAdapter.class)
                 .build());
+    }
+
+    public static void registerOn(GsonBuilder builder) {
+        registerOn(builder, false);
+    }
+
+    public static void registerOn(GsonBuilder builder, boolean interfaces) {
+        checkNotNull(builder, "GsonBuilder cannot be null");
+        builder.registerTypeAdapterFactory(forGuava());
+
+        if (interfaces)
+            builder.registerTypeAdapterFactory(forJava());
+
+        for (Map.Entry<Class, InstanceCreator<?>> e : creatorMap.entrySet()) {
+            builder.registerTypeAdapter(e.getKey(), e.getValue());
+        }
     }
 
     /**

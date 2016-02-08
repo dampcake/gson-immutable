@@ -15,19 +15,21 @@
  */
 package com.dampcake.gson.immutable;
 
-import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multiset;
 import com.google.gson.TypeAdapter;
 
-import java.util.SortedMap;
+import java.util.Set;
 
-class ImmutableSortedMapAdapter extends DelegateAdapter<SortedMap<?, ?>> {
+class ImmutableMultisetAdapter extends DelegateAdapter<Multiset<?>> {
 
-    public ImmutableSortedMapAdapter(TypeAdapter<SortedMap<?, ?>> delegate) {
+    public ImmutableMultisetAdapter(TypeAdapter<Multiset<?>> delegate) {
         super(delegate);
     }
 
     @Override
-    protected SortedMap<?, ?> transform(SortedMap<?, ?> map) {
-        return ImmutableSortedMap.copyOf(map);
+    protected Multiset<?> transform(Multiset<?> set) {
+        return ImmutableMultiset.copyOf(set);
     }
 }
