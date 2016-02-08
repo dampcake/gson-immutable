@@ -2,15 +2,19 @@ package com.dampcake.gson.immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultiset;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNull;
 
@@ -19,56 +23,64 @@ import static org.junit.Assert.assertNull;
  */
 public class ImmutableAdapterFactoryTest {
 
-    private Gson gson = new Gson();
+    private GsonBuilder builder;
 
-    @Test
-    public void testForGuava() {
-        TypeAdapterFactory factory = ImmutableAdapterFactory.forGuava();
-
-        assertThat(factory.create(gson, TestTypes.I_COLLECTION_TYPE), instanceOf(ImmutableCollectionAdapter.class));
-        assertThat(factory.create(gson, TestTypes.I_LIST_TYPE), instanceOf(ImmutableListAdapter.class));
-        assertThat(factory.create(gson, TestTypes.I_SET_TYPE), instanceOf(ImmutableSetAdapter.class));
-        assertThat(factory.create(gson, TestTypes.I_SSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
-        assertThat(factory.create(gson, TestTypes.I_MAP_TYPE), instanceOf(ImmutableMapAdapter.class));
-        assertThat(factory.create(gson, TestTypes.I_SMAP_TYPE), instanceOf(ImmutableSortedMapAdapter.class));
+    @Before
+    public void setUp() {
+        builder = new GsonBuilder();
     }
 
     @Test
-    public void testForJava() {
-        TypeAdapterFactory factory = ImmutableAdapterFactory.forJava();
+    public void testRegister() {
+        ImmutableAdapterFactory.registerOn(builder);
+        Gson gson = builder.create();
 
-        assertThat(factory.create(gson, TestTypes.COLLECTION_TYPE), instanceOf(ImmutableCollectionAdapter.class));
-        assertThat(factory.create(gson, TestTypes.LIST_TYPE), instanceOf(ImmutableListAdapter.class));
-        assertThat(factory.create(gson, TestTypes.SET_TYPE), instanceOf(ImmutableSetAdapter.class));
-        assertThat(factory.create(gson, TestTypes.SSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
-        assertThat(factory.create(gson, TestTypes.MAP_TYPE), instanceOf(ImmutableMapAdapter.class));
-        assertThat(factory.create(gson, TestTypes.SMAP_TYPE), instanceOf(ImmutableSortedMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_COLLECTION_TYPE), instanceOf(ImmutableCollectionAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_LIST_TYPE), instanceOf(ImmutableListAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SET_TYPE), instanceOf(ImmutableSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_MAP_TYPE), instanceOf(ImmutableMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SMAP_TYPE), instanceOf(ImmutableSortedMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_MSET_TYPE), instanceOf(ImmutableMultisetAdapter.class));
+
+        assertThat(gson.getAdapter(TestTypes.COLLECTION_TYPE), not(instanceOf(ImmutableCollectionAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.LIST_TYPE), not(instanceOf(ImmutableListAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.SET_TYPE), not(instanceOf(ImmutableSetAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.SSET_TYPE), not(instanceOf(ImmutableSortedSetAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.NSET_TYPE), not(instanceOf(ImmutableSortedSetAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.MAP_TYPE), not(instanceOf(ImmutableMapAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.SMAP_TYPE), not(instanceOf(ImmutableSortedMapAdapter.class)));
+        assertThat(gson.getAdapter(TestTypes.MSET_TYPE), not(instanceOf(ImmutableMultisetAdapter.class)));
     }
 
     @Test
-    public void testInvalidTypes() {
-        TypeAdapterFactory guava = ImmutableAdapterFactory.forGuava();
-        TypeAdapterFactory java = ImmutableAdapterFactory.forJava();
+    public void testRegisterWithInterfaces() {
+        ImmutableAdapterFactory.registerOn(builder, true);
+        Gson gson = builder.create();
 
-        assertNull(guava.create(gson, TestTypes.LIST_TYPE));
-        assertNull(java.create(gson, TestTypes.I_LIST_TYPE));
+        assertThat(gson.getAdapter(TestTypes.I_COLLECTION_TYPE), instanceOf(ImmutableCollectionAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_LIST_TYPE), instanceOf(ImmutableListAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SET_TYPE), instanceOf(ImmutableSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_MAP_TYPE), instanceOf(ImmutableMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_SMAP_TYPE), instanceOf(ImmutableSortedMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.I_MSET_TYPE), instanceOf(ImmutableMultisetAdapter.class));
+
+        assertThat(gson.getAdapter(TestTypes.COLLECTION_TYPE), instanceOf(ImmutableCollectionAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.LIST_TYPE), instanceOf(ImmutableListAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.SET_TYPE), instanceOf(ImmutableSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.SSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.NSET_TYPE), instanceOf(ImmutableSortedSetAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.MAP_TYPE), instanceOf(ImmutableMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.SMAP_TYPE), instanceOf(ImmutableSortedMapAdapter.class));
+        assertThat(gson.getAdapter(TestTypes.MSET_TYPE), instanceOf(ImmutableMultisetAdapter.class));
     }
 
     @Test
     public void testNullType() {
         TypeAdapterFactory factory = new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder().put(Collection.class, ExceptionThrowingAdapter.class).build());
 
-        assertNull(factory.create(gson, TestTypes.COLLECTION_TYPE));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testForGuavaCreateNullType() {
-        ImmutableAdapterFactory.forGuava().create(gson, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testForJavaCreateNullType() {
-        ImmutableAdapterFactory.forJava().create(gson, null);
+        assertNull(factory.create(builder.create(), TestTypes.COLLECTION_TYPE));
     }
 
     /**

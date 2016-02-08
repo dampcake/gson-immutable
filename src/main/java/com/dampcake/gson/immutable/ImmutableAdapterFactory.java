@@ -70,14 +70,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
         this.adapters = adapters;
     }
 
-    /**
-     * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
-     * by Guava interfaces.
-     *
-     * @return the created {@link TypeAdapterFactory}.
-     */
-    // TODO: private
-    public static TypeAdapterFactory forGuava() {
+    private static TypeAdapterFactory forGuava() {
         return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
                 .put(ImmutableCollection.class, ImmutableCollectionAdapter.class)
                 .put(ImmutableList.class, ImmutableListAdapter.class)
@@ -89,14 +82,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .build());
     }
 
-    /**
-     * Creates a {@link TypeAdapterFactory} for de-serializing Immutable types specified
-     * by Java interfaces.
-     *
-     * @return the created {@link TypeAdapterFactory}.
-     */
-    // TODO: private
-    public static TypeAdapterFactory forJava() {
+    private static TypeAdapterFactory forJava() {
         return new ImmutableAdapterFactory(ImmutableMap.<Class, Class<? extends TypeAdapter>>builder()
                 .put(Collection.class, ImmutableCollectionAdapter.class)
                 .put(List.class, ImmutableListAdapter.class)
@@ -109,10 +95,26 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .build());
     }
 
+    /**
+     * Register the ImmutableAdapterFactory in the passed GsonBuilder.
+     * Same as calling <code>ImmutableAdapterFactory.registerOn(builder, false);</code>
+     *
+     *
+     * @param builder the GsonBuilder to register on
+     * @see ImmutableAdapterFactory#registerOn(GsonBuilder, boolean)
+     */
     public static void registerOn(GsonBuilder builder) {
         registerOn(builder, false);
     }
 
+    /**
+     * Register the ImmutableAdapterFactory in the passed GsonBuilder.
+     * If interfaces is set to true interface types such as List, Collection, Multiset, etc, will be registered
+     * and will return their Immutable type instead.
+     *
+     * @param builder the GsonBuilder to register on
+     * @param interfaces true to register interfaces
+     */
     public static void registerOn(GsonBuilder builder, boolean interfaces) {
         checkNotNull(builder, "GsonBuilder cannot be null");
         builder.registerTypeAdapterFactory(forGuava());
