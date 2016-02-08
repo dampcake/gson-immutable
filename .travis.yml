@@ -6,6 +6,5 @@ env:
     - SONATYPE_USERNAME=dampcake
     - secure: "LwGIZHEum/jNYeHakGXfKJcrx8PdKSuVYi/UheFUCzvvr9swIV6aLR8VDRKomVhyvVEgyvkCUeZ60cPjRAeXEDT8LfQeYVnRpmSIFlEsEsOy9VTfdWZ4LsOeOCcSxP40JmM2CxklkGjuLvU561iOeY8fkY8VgHe9KEKmBt6S2Cc="
 
-after_success:
-  - mvn clean test cobertura:cobertura coveralls:report
-  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { python addserver.py; mvn clean deploy --settings ~/.m2/mySettings.xml; };"
+script: mvn clean test cobertura:cobertura coveralls:report
+after_success: "[[ $TRAVIS_BRANCH == \"master\" ]] && { mvn clean deploy --settings travis-settings.xml -DskipTests=true };"
