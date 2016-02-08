@@ -21,8 +21,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableSortedMultiset;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.SortedMultiset;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
@@ -58,10 +60,12 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
             .put(ImmutableMap.class, Map.class)
             .put(ImmutableSortedMap.class, SortedMap.class)
             .put(ImmutableMultiset.class, Multiset.class)
+            .put(ImmutableSortedMultiset.class, SortedMultiset.class)
             .build();
 
     private static final Map<Class, InstanceCreator<?>> creatorMap = ImmutableMap.<Class, InstanceCreator<?>>builder()
             .put(Multiset.class, new MultisetCreator())
+            .put(SortedMultiset.class, new SortedMultisetCreator())
             .build();
 
     private final Map<Class, Class<? extends TypeAdapter>> adapters;
@@ -79,6 +83,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .put(ImmutableMap.class, ImmutableMapAdapter.class)
                 .put(ImmutableSortedMap.class, ImmutableSortedMapAdapter.class)
                 .put(ImmutableMultiset.class, ImmutableMultisetAdapter.class)
+                .put(ImmutableSortedMultiset.class, ImmutableSortedMultisetAdapter.class)
                 .build());
     }
 
@@ -92,6 +97,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .put(Map.class, ImmutableMapAdapter.class)
                 .put(SortedMap.class, ImmutableSortedMapAdapter.class)
                 .put(Multiset.class, ImmutableMultisetAdapter.class)
+                .put(SortedMultiset.class, ImmutableSortedMultisetAdapter.class)
                 .build());
     }
 

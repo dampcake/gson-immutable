@@ -6,8 +6,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableSortedMultiset;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.SortedMultiset;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Collection;
@@ -55,6 +57,11 @@ public final class TestTypes {
     public static final TypeToken<ImmutableMultiset<String>> I_MSET_TYPE = new TypeToken<ImmutableMultiset<String>>() {
     };
     public static final TypeToken<Multiset<String>> MSET_TYPE = new TypeToken<Multiset<String>>() {
+    };
+
+    public static final TypeToken<ImmutableSortedMultiset<String>> I_MSSET_TYPE = new TypeToken<ImmutableSortedMultiset<String>>() {
+    };
+    public static final TypeToken<SortedMultiset<String>> MSSET_TYPE = new TypeToken<SortedMultiset<String>>() {
     };
 
     private TestTypes() {
