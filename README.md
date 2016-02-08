@@ -21,13 +21,13 @@ http://dampcake.github.io/gson-immutable
 <dependency>
     <groupId>com.dampcake</groupId>
     <artifactId>gson-immutable</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-compile 'com.dampcake:gson-immutable:1.1'
+compile 'com.dampcake:gson-immutable:1.1.1'
 ```
 
 ### Examples
