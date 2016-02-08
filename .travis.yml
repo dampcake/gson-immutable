@@ -7,4 +7,4 @@ env:
     - secure: "LwGIZHEum/jNYeHakGXfKJcrx8PdKSuVYi/UheFUCzvvr9swIV6aLR8VDRKomVhyvVEgyvkCUeZ60cPjRAeXEDT8LfQeYVnRpmSIFlEsEsOy9VTfdWZ4LsOeOCcSxP40JmM2CxklkGjuLvU561iOeY8fkY8VgHe9KEKmBt6S2Cc="
 
 script: mvn clean cobertura:cobertura coveralls:report
-after_success: "[[ $TRAVIS_BRANCH == \"master\" ]] && { mvn clean deploy --settings travis-settings.xml -DskipTests=true; };"
+after_success: mvn clean deploy --settings travis-settings.xml -DskipTests=true
