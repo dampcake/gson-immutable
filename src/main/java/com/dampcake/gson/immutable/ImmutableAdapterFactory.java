@@ -26,6 +26,8 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -108,13 +110,31 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
         return null;
     }
 
-    private <T> TypeAdapter getDelegate(Gson gson, TypeToken<T> type) {
-        Class<?> iface = type.getRawType();
+    private <T> TypeAdapter getDelegate(Gson gson, final TypeToken<T> type) {
+        final Class<?> iface = type.getRawType();
 
-        if (!iface.isInterface())
-            iface = interfaceMap.get(iface);
+        if (!iface.isInterface()) {
+            checkState(type.getType() instanceof ParameterizedType, "Non-mappable type found");
 
-        checkState(iface != null, "Non-mappable type found");
-        return gson.getDelegateAdapter(this, TypeToken.get(iface));
+            TypeToken t = TypeToken.get(new ParameterizedType() {
+                @Override
+                public Type[] getActualTypeArguments() {
+                    return ((ParameterizedType) type.getType()).getActualTypeArguments();
+                }
+
+                @Override
+                public Type getRawType() {
+                    return interfaceMap.get(iface);
+                }
+
+                @Override
+                public Type getOwnerType() {
+                    return ((ParameterizedType) type.getType()).getOwnerType();
+                }
+            });
+            return gson.getDelegateAdapter(this, t);
+        }
+
+        return gson.getDelegateAdapter(this, type);
     }
 }
