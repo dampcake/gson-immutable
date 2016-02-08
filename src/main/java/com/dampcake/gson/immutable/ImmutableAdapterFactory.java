@@ -31,6 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -88,6 +89,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
                 .put(List.class, ImmutableListAdapter.class)
                 .put(Set.class, ImmutableSetAdapter.class)
                 .put(SortedSet.class, ImmutableSortedSetAdapter.class)
+                .put(NavigableSet.class, ImmutableSortedSetAdapter.class)
                 .put(Map.class, ImmutableMapAdapter.class)
                 .put(SortedMap.class, ImmutableSortedMapAdapter.class)
                 .build());
