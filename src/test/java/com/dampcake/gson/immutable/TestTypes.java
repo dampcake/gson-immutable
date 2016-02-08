@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -45,6 +46,8 @@ public final class TestTypes {
     public static final TypeToken<ImmutableSortedSet<String>> I_SSET_TYPE = new TypeToken<ImmutableSortedSet<String>>() {
     };
     public static final TypeToken<SortedSet<String>> SSET_TYPE = new TypeToken<SortedSet<String>>() {
+    };
+    public static final TypeToken<NavigableSet<String>> NSET_TYPE = new TypeToken<NavigableSet<String>>() {
     };
 
     private TestTypes() {
