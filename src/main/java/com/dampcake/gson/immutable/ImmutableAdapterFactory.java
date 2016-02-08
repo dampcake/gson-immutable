@@ -116,7 +116,7 @@ public final class ImmutableAdapterFactory implements TypeAdapterFactory {
         if (!iface.isInterface()) {
             checkState(type.getType() instanceof ParameterizedType, "Non-mappable type found");
 
-            TypeToken t = TypeToken.get(new ParameterizedType() {
+            TypeToken<?> t = TypeToken.get(new ParameterizedType() {
                 @Override
                 public Type[] getActualTypeArguments() {
                     return ((ParameterizedType) type.getType()).getActualTypeArguments();
