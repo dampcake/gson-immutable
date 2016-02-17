@@ -21,13 +21,13 @@ http://dampcake.github.io/gson-immutable
 <dependency>
     <groupId>com.dampcake</groupId>
     <artifactId>gson-immutable</artifactId>
-    <version>1.1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-compile 'com.dampcake:gson-immutable:1.1.1'
+compile 'com.dampcake:gson-immutable:1.2'
 ```
 
 ### Examples
@@ -51,6 +51,6 @@ Collection | ImmutableCollection | :heavy_check_mark:
 List | ImmutableList | :heavy_check_mark:
 Set | ImmutableSet | :heavy_check_mark:
 SortedSet | ImmutableSortedSet | :heavy_check_mark:
-NavigableSet | ImmutableSortedSet | :x:
+NavigableSet | ImmutableSortedSet | :heavy_check_mark:
 Map | ImmutableMap | :heavy_check_mark:
 SortedMap | ImmutableSortedMap | :heavy_check_mark:
